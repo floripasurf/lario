@@ -147,21 +147,50 @@ export default function AnunciarPage() {
   }
 
   return (
-    <div className="container mx-auto px-4 py-8 max-w-2xl">
-      <h1 className="text-3xl font-bold mb-2">Anunciar imóvel</h1>
-      <p className="text-muted-foreground mb-8">Grátis para publicar. Você só paga se vender.</p>
+    <div className="container mx-auto px-4 py-8 max-w-2xl animate-fade-in">
+      <h1 className="text-3xl font-bold mb-2">Anunciar imovel</h1>
+      <p className="text-muted-foreground mb-8">Gratis para publicar. Voce so paga se vender.</p>
 
       {/* Step indicator */}
-      <div className="flex gap-2 mb-8">
-        {STEPS.map((s, i) => (
-          <div key={i} className={`flex-1 text-center text-xs py-2 rounded ${i === step ? 'bg-primary text-primary-foreground' : i < step ? 'bg-primary/20' : 'bg-muted'}`}>
-            {s}
+      <nav aria-label="Progresso do formulario" className="mb-8">
+        <div className="flex gap-1.5 mb-3">
+          {STEPS.map((_, i) => (
+            <div
+              key={i}
+              className={`h-1.5 flex-1 rounded-full transition-all duration-500 ${
+                i === step ? 'bg-primary' : i < step ? 'bg-primary/40' : 'bg-muted'
+              }`}
+            />
+          ))}
+        </div>
+        <div className="flex justify-between items-center">
+          <div className="flex items-center gap-3">
+            {STEPS.map((s, i) => (
+              <button
+                key={i}
+                type="button"
+                onClick={() => { if (i < step) setStep(i); }}
+                disabled={i > step}
+                className={`text-xs font-medium px-3 py-1.5 rounded-full transition-all duration-200 ${
+                  i === step
+                    ? 'bg-primary text-primary-foreground shadow-sm'
+                    : i < step
+                    ? 'bg-primary/10 text-primary hover:bg-primary/20 cursor-pointer'
+                    : 'bg-muted text-muted-foreground cursor-not-allowed'
+                }`}
+              >
+                {s}
+              </button>
+            ))}
           </div>
-        ))}
-      </div>
+          <span className="text-xs text-muted-foreground font-medium tabular-nums">
+            {step + 1}/{STEPS.length}
+          </span>
+        </div>
+      </nav>
 
-      <Card>
-        <CardContent className="p-6 space-y-4">
+      <Card className="shadow-sm hover:shadow-md transition-shadow duration-300">
+        <CardContent className="p-6 md:p-8 space-y-5">
           {step === 0 && (
             <>
               <CardHeader className="px-0 pt-0"><CardTitle>Dados do imóvel</CardTitle></CardHeader>
@@ -274,24 +303,40 @@ export default function AnunciarPage() {
               <CardHeader className="px-0 pt-0"><CardTitle>Fotos</CardTitle></CardHeader>
               <div>
                 <Label htmlFor="photos" className="cursor-pointer">
-                  <div className="border-2 border-dashed rounded-lg p-8 text-center hover:bg-muted/50 transition">
-                    <p className="text-muted-foreground">{uploading ? 'Enviando...' : 'Clique para adicionar fotos'}</p>
-                    <p className="text-xs text-muted-foreground mt-1">JPG, PNG ou WebP (máx. 5MB cada, até 20 fotos)</p>
+                  <div className={`border-2 border-dashed rounded-xl p-10 text-center transition-all duration-200 ${uploading ? 'bg-primary/5 border-primary/30' : 'hover:bg-muted/50 hover:border-primary/20'}`}>
+                    {uploading ? (
+                      <div className="flex flex-col items-center gap-2">
+                        <div className="h-8 w-8 border-2 border-primary border-t-transparent rounded-full animate-spin" />
+                        <p className="text-sm text-primary font-medium">Enviando fotos...</p>
+                      </div>
+                    ) : (
+                      <>
+                        <div className="w-12 h-12 mx-auto mb-3 rounded-full bg-muted flex items-center justify-center">
+                          <svg className="w-6 h-6 text-muted-foreground" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 16v-8m0 0l-3 3m3-3l3 3M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5" /></svg>
+                        </div>
+                        <p className="text-foreground font-medium text-sm">Clique para adicionar fotos</p>
+                        <p className="text-xs text-muted-foreground mt-1.5">JPG, PNG ou WebP (max. 5MB cada, ate 20 fotos)</p>
+                      </>
+                    )}
                   </div>
                 </Label>
                 <input id="photos" type="file" multiple accept="image/jpeg,image/png,image/webp" className="hidden" onChange={handleUpload} disabled={uploading} />
               </div>
               {photos.length > 0 && (
-                <div className="grid grid-cols-4 gap-2">
-                  {photos.map((url, i) => (
-                    <div key={i} className="relative aspect-square rounded overflow-hidden">
-                      <img src={url} alt={`Foto ${i + 1}`} className="object-cover w-full h-full" />
-                      <button
-                        className="absolute top-1 right-1 bg-black/50 text-white rounded-full w-5 h-5 text-xs flex items-center justify-center"
-                        onClick={() => setPhotos(prev => prev.filter((_, idx) => idx !== i))}
-                      >x</button>
-                    </div>
-                  ))}
+                <div>
+                  <p className="text-xs text-muted-foreground mb-2 font-medium">{photos.length} {photos.length === 1 ? 'foto adicionada' : 'fotos adicionadas'}</p>
+                  <div className="grid grid-cols-4 gap-2">
+                    {photos.map((url, i) => (
+                      <div key={i} className="relative aspect-square rounded-lg overflow-hidden group ring-1 ring-border/50">
+                        <img src={url} alt={`Foto ${i + 1}`} className="object-cover w-full h-full group-hover:scale-105 transition-transform duration-300" />
+                        <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-200" />
+                        <button
+                          className="absolute top-1.5 right-1.5 bg-black/60 hover:bg-destructive text-white rounded-full w-6 h-6 text-xs flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-200 active:scale-90"
+                          onClick={() => setPhotos(prev => prev.filter((_, idx) => idx !== i))}
+                        >x</button>
+                      </div>
+                    ))}
+                  </div>
                 </div>
               )}
             </>
@@ -322,27 +367,64 @@ export default function AnunciarPage() {
 
           {step === 4 && (
             <>
-              <CardHeader className="px-0 pt-0"><CardTitle>Revisar anúncio</CardTitle></CardHeader>
-              <div className="space-y-3 text-sm">
-                <div><strong>Tipo:</strong> {form.transaction_type === 'venda' ? 'Venda' : 'Aluguel'} - {PROPERTY_TYPE_LABELS[form.property_type]}</div>
-                <div><strong>Título:</strong> {form.title}</div>
-                <div><strong>Preço:</strong> R$ {parseFloat(form.price || '0').toLocaleString('pt-BR')}</div>
-                <div><strong>Área:</strong> {form.area_m2} m²</div>
-                <div><strong>Endereço:</strong> {form.address_street}, {form.address_number} - {form.address_neighborhood}, {form.address_city}/{form.address_state}</div>
-                <div><strong>Fotos:</strong> {photos.length}</div>
+              <CardHeader className="px-0 pt-0"><CardTitle>Revisar anuncio</CardTitle></CardHeader>
+              <div className="space-y-1 text-sm">
+                <div className="flex justify-between py-3 border-b border-border/50">
+                  <span className="text-muted-foreground">Tipo</span>
+                  <span className="font-medium">{form.transaction_type === 'venda' ? 'Venda' : 'Aluguel'} - {PROPERTY_TYPE_LABELS[form.property_type]}</span>
+                </div>
+                <div className="flex justify-between py-3 border-b border-border/50">
+                  <span className="text-muted-foreground">Titulo</span>
+                  <span className="font-medium text-right max-w-[60%]">{form.title}</span>
+                </div>
+                <div className="flex justify-between py-3 border-b border-border/50">
+                  <span className="text-muted-foreground">Preco</span>
+                  <span className="font-semibold text-primary">R$ {parseFloat(form.price || '0').toLocaleString('pt-BR')}</span>
+                </div>
+                <div className="flex justify-between py-3 border-b border-border/50">
+                  <span className="text-muted-foreground">Area</span>
+                  <span className="font-medium">{form.area_m2} m&sup2;</span>
+                </div>
+                <div className="flex justify-between py-3 border-b border-border/50">
+                  <span className="text-muted-foreground">Endereco</span>
+                  <span className="font-medium text-right max-w-[60%]">{form.address_street}, {form.address_number} - {form.address_neighborhood}, {form.address_city}/{form.address_state}</span>
+                </div>
+                <div className="flex justify-between py-3">
+                  <span className="text-muted-foreground">Fotos</span>
+                  <span className="font-medium">{photos.length} {photos.length === 1 ? 'foto' : 'fotos'}</span>
+                </div>
               </div>
+              {photos.length > 0 && (
+                <div className="flex gap-2 overflow-x-auto pt-2 pb-1">
+                  {photos.slice(0, 6).map((url, i) => (
+                    <div key={i} className="relative w-16 h-16 flex-shrink-0 rounded-lg overflow-hidden ring-1 ring-border/50">
+                      <img src={url} alt={`Foto ${i + 1}`} className="object-cover w-full h-full" />
+                    </div>
+                  ))}
+                  {photos.length > 6 && (
+                    <div className="w-16 h-16 flex-shrink-0 rounded-lg bg-muted flex items-center justify-center text-xs text-muted-foreground font-medium">
+                      +{photos.length - 6}
+                    </div>
+                  )}
+                </div>
+              )}
             </>
           )}
 
-          <div className="flex justify-between pt-4">
-            <Button variant="outline" onClick={() => setStep(Math.max(0, step - 1))} disabled={step === 0}>
+          <div className="flex justify-between pt-6 border-t border-border/50">
+            <Button variant="outline" onClick={() => setStep(Math.max(0, step - 1))} disabled={step === 0} className="min-w-[100px]">
               Voltar
             </Button>
             {step < STEPS.length - 1 ? (
-              <Button onClick={() => setStep(step + 1)}>Próximo</Button>
+              <Button onClick={() => setStep(step + 1)} className="min-w-[100px]">Proximo</Button>
             ) : (
-              <Button onClick={handleSubmit} disabled={loading}>
-                {loading ? 'Publicando...' : 'Publicar anúncio'}
+              <Button onClick={handleSubmit} disabled={loading} className="min-w-[160px]">
+                {loading ? (
+                  <span className="flex items-center gap-2">
+                    <span className="h-4 w-4 border-2 border-primary-foreground border-t-transparent rounded-full animate-spin" />
+                    Publicando...
+                  </span>
+                ) : 'Publicar anuncio'}
               </Button>
             )}
           </div>

@@ -16,6 +16,7 @@ export function RegisterForm() {
     full_name: '',
     cpf: '',
     phone: '',
+    email: '',
     user_type: 'pf' as 'pf' | 'corretor',
     creci_number: '',
     creci_state: '',
@@ -34,6 +35,30 @@ export function RegisterForm() {
       ? formData.phone
       : `+55${formData.phone.replace(/\D/g, '')}`;
 
+    // Check uniqueness of CPF, email, phone, CRECI
+    try {
+      const checkRes = await fetch('/api/auth/check-unique', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          cpf: formData.cpf,
+          email: formData.email,
+          phone: formattedPhone,
+          creci_number: formData.creci_number || undefined,
+        }),
+      });
+      if (checkRes.status === 409) {
+        const { message } = await checkRes.json();
+        setError(message);
+        setLoading(false);
+        return;
+      }
+    } catch {
+      setError('Erro ao verificar dados. Tente novamente.');
+      setLoading(false);
+      return;
+    }
+
     // Send OTP
     const { error: authError } = await supabase.auth.signInWithOtp({
       phone: formattedPhone,
@@ -41,6 +66,7 @@ export function RegisterForm() {
         data: {
           full_name: formData.full_name,
           cpf: formData.cpf.replace(/\D/g, ''),
+          email: formData.email.toLowerCase().trim(),
           user_type: formData.user_type,
           creci_number: formData.creci_number || null,
           creci_state: formData.creci_state || null,
@@ -58,6 +84,7 @@ export function RegisterForm() {
     sessionStorage.setItem('register_data', JSON.stringify({
       ...formData,
       phone: formattedPhone,
+      email: formData.email.toLowerCase().trim(),
       cpf: formData.cpf.replace(/\D/g, ''),
     }));
 
@@ -95,6 +122,18 @@ export function RegisterForm() {
           </div>
 
           <div className="space-y-2">
+            <Label htmlFor="email">E-mail</Label>
+            <Input
+              id="email"
+              type="email"
+              placeholder="seu@email.com"
+              value={formData.email}
+              onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+              required
+            />
+          </div>
+
+          <div className="space-y-2">
             <Label htmlFor="phone">Telefone</Label>
             <div className="flex gap-2">
               <span className="flex items-center px-3 border rounded-md bg-muted text-sm">+55</span>
@@ -119,8 +158,8 @@ export function RegisterForm() {
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="pf">Pessoa Fisica</SelectItem>
-                <SelectItem value="corretor">Corretor de Imoveis</SelectItem>
+                <SelectItem value="pf">Pessoa Física</SelectItem>
+                <SelectItem value="corretor">Corretor de Imóveis</SelectItem>
               </SelectContent>
             </Select>
           </div>
@@ -162,7 +201,7 @@ export function RegisterForm() {
           </Button>
 
           <p className="text-center text-sm text-muted-foreground">
-            Ja tem conta?{' '}
+            Já tem conta?{' '}
             <Link href="/login" className="text-primary underline">Entrar</Link>
           </p>
         </form>

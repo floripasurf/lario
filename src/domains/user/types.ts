@@ -6,6 +6,9 @@ export interface Profile {
   full_name: string;
   cpf: string;
   phone: string;
+  email: string | null;
+  phone_verified: boolean;
+  email_verified: boolean;
   creci_number: string | null;
   creci_state: string | null;
   creci_verified: boolean;
@@ -20,6 +23,7 @@ export interface CreateProfileInput {
   full_name: string;
   cpf: string;
   phone: string;
+  email: string;
   creci_number?: string;
   creci_state?: string;
 }

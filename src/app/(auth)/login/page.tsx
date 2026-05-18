@@ -3,7 +3,7 @@ import { LoginForm } from '@/components/auth/login-form';
 
 export const metadata = {
   title: 'Entrar | Lario',
-  description: 'Faca login na sua conta Lario',
+  description: 'Faça login na sua conta Lario',
 };
 
 export default function LoginPage() {

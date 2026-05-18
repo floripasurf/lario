@@ -22,7 +22,7 @@ export function ListingFilters({ filters, onChange }: ListingFiltersProps) {
   return (
     <div className="flex flex-wrap gap-3 items-end">
       <div className="space-y-1">
-        <Label className="text-xs">Tipo</Label>
+        <Label className="text-xs">Negócio</Label>
         <Select
           value={filters.transaction_type || 'all'}
           onValueChange={(v) => { if (v !== null) onChange({ ...filters, transaction_type: v === 'all' ? undefined : v as Filters['transaction_type'] }); }}

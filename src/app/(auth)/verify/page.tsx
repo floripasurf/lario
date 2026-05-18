@@ -44,6 +44,9 @@ function VerifyContent() {
             full_name: data.full_name,
             cpf: data.cpf,
             phone: data.phone,
+            email: data.email || null,
+            phone_verified: true,
+            email_verified: false,
             user_type: data.user_type,
             creci_number: data.creci_number || null,
             creci_state: data.creci_state || null,
@@ -59,9 +62,9 @@ function VerifyContent() {
   return (
     <Card className="w-full max-w-md mx-auto">
       <CardHeader>
-        <CardTitle className="text-2xl">Verificar codigo</CardTitle>
+        <CardTitle className="text-2xl">Verificar código</CardTitle>
         <CardDescription>
-          Digite o codigo enviado para {phone}
+          Digite o código enviado para {phone}
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-4">

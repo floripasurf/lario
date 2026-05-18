@@ -19,11 +19,14 @@ export const metadata: Metadata = {
     default: 'Lario - Portal Imobiliário | Anuncie Grátis',
     template: '%s | Lario',
   },
-  description: 'Encontre seu imóvel em Florianópolis. Anuncie grátis, pague só se vender. Busca por mapa com raio geográfico.',
-  keywords: ['imóveis', 'florianópolis', 'comprar', 'alugar', 'apartamento', 'casa', 'portal imobiliário'],
+  description: 'Compre, venda ou alugue imóveis em Florianópolis. Anuncie grátis, pague só no sucesso. Busca por mapa com raio geográfico.',
+  keywords: ['imóveis', 'florianópolis', 'comprar', 'vender', 'alugar', 'apartamento', 'casa', 'portal imobiliário'],
+  icons: {
+    icon: '/favicon.svg',
+  },
   openGraph: {
     title: 'Lario - Portal Imobiliário',
-    description: 'Anuncie grátis, pague só se vender.',
+    description: 'Compre, venda ou alugue imóveis. Anuncie grátis.',
     url: 'https://lario.com.br',
     siteName: 'Lario',
     locale: 'pt_BR',

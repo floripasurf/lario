@@ -8,7 +8,9 @@ export const MAX_PHOTOS_PER_LISTING = 20;
 export const PHOTO_MAX_SIZE_MB = 5;
 export const GEOCODING_CACHE_TTL_DAYS = 90;
 export const LISTING_REVALIDATE_SECONDS = 3600;
-export const SUCCESS_FEE_PERCENTAGE = 1.5; // 1.5% do valor de venda
+// Success fee progressiva — tabela real em pricing-preview.tsx
+// Esta constante é usada apenas como fallback genérico no calculator
+export const SUCCESS_FEE_PERCENTAGE = 1.5;
 export const NOMINATIM_BASE_URL = process.env.NOMINATIM_BASE_URL || 'https://nominatim.openstreetmap.org';
 export const NOMINATIM_USER_AGENT = process.env.NOMINATIM_USER_AGENT || 'lario-com-br/1.0';
 
