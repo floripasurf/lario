@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
-import { Search, ArrowRight, MapPin, ShieldCheck, Home, Bed, Bath, Maximize } from 'lucide-react';
+import { ArrowRight, MapPin, Home, Bed, Bath, Maximize, Share2 } from 'lucide-react';
 
 export function Hero() {
   return (
@@ -22,42 +22,36 @@ export function Hero() {
             Florianópolis e região
           </div>
 
-          <h1 className="mb-6 max-w-[12ch] text-balance">
-            Imóvel bom aparece no mapa, não no pacote mais caro.
+          <h1 className="mb-6 text-balance">
+            Anuncie agora e pague somente quando vender!
           </h1>
 
           <p className="mb-8 max-w-xl text-lg leading-8 text-muted-foreground md:text-xl">
-            A Lario conecta compra, aluguel e anúncio com busca por raio, validação real e taxa apenas quando o negócio acontece.
+            Divulgue o link do seu anúncio na Lario e não pague nada para anunciar. Simples assim.
           </p>
 
           <div className="flex flex-col gap-3 sm:flex-row">
-            <Button size="lg" nativeButton={false} className="h-12 px-5 text-base shadow-lg shadow-primary/20" render={<Link href="/buscar?transaction=venda" />}>
-              <Search className="mr-2 h-5 w-5" />
-              Comprar imóvel
+            <Button size="lg" nativeButton={false} className="h-13 px-6 text-base shadow-lg shadow-primary/20" render={<Link href="/anunciar" />}>
+              Anunciar grátis
+              <ArrowRight className="ml-2 h-5 w-5" />
             </Button>
-            <Button size="lg" variant="outline" nativeButton={false} className="h-12 border-primary/20 bg-white/70 px-5 text-base hover:bg-white" render={<Link href="/buscar?transaction=aluguel" />}>
-              <Search className="mr-2 h-5 w-5" />
-              Alugar imóvel
+            <Button size="lg" variant="outline" nativeButton={false} className="h-13 border-primary/20 bg-white/70 px-6 text-base hover:bg-white" render={<Link href="/buscar" />}>
+              Buscar imóveis
             </Button>
           </div>
 
-          <Button size="sm" variant="ghost" nativeButton={false} className="mt-3 px-0 text-muted-foreground hover:bg-transparent hover:text-primary" render={<Link href="/anunciar" />}>
-            Sou corretor ou proprietário
-            <ArrowRight className="ml-1 h-4 w-4" />
-          </Button>
-
-          <div className="mt-10 grid max-w-xl grid-cols-3 divide-x divide-border/70 rounded-xl border border-border/70 bg-white/65 py-4 text-center shadow-sm backdrop-blur">
+          <div className="mt-12 grid max-w-xl grid-cols-3 divide-x divide-border/70 rounded-xl border border-border/70 bg-white/65 py-4 text-center shadow-sm backdrop-blur">
             <div>
-              <p className="text-lg font-bold text-foreground">R$ 0</p>
-              <p className="text-xs text-muted-foreground">para publicar</p>
+              <p className="text-lg font-bold text-[#F47520]">Grátis</p>
+              <p className="text-xs text-muted-foreground">para anunciar</p>
             </div>
             <div>
-              <p className="text-lg font-bold text-foreground">raio</p>
-              <p className="text-xs text-muted-foreground">em vez de bairro</p>
+              <p className="text-lg font-bold text-foreground">Mapa</p>
+              <p className="text-xs text-muted-foreground">busca inteligente</p>
             </div>
             <div>
-              <p className="text-lg font-bold text-foreground">CRECI</p>
-              <p className="text-xs text-muted-foreground">verificado</p>
+              <p className="text-lg font-bold text-foreground">Justo</p>
+              <p className="text-xs text-muted-foreground">pague só no sucesso</p>
             </div>
           </div>
         </div>
@@ -100,12 +94,12 @@ export function Hero() {
 
           <div className="absolute bottom-8 left-0 max-w-xs rounded-xl border border-border/70 bg-white/90 p-4 shadow-xl backdrop-blur">
             <div className="flex items-center gap-3">
-              <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10 text-primary">
-                <ShieldCheck className="h-5 w-5" />
+              <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-[#F47520]/10 text-[#F47520]">
+                <Share2 className="h-5 w-5" />
               </div>
               <div>
-                <p className="text-sm font-semibold">Anúncio validado</p>
-                <p className="text-xs text-muted-foreground">CPF e CRECI únicos por conta.</p>
+                <p className="text-sm font-semibold">Compartilhe seu link</p>
+                <p className="text-xs text-muted-foreground">Divulgue e receba interessados direto.</p>
               </div>
             </div>
           </div>
